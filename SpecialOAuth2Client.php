@@ -27,10 +27,13 @@ class SpecialOAuth2Client extends SpecialPage {
                 } else {
                         $this->db_read_index = DB_SLAVE;
                 }
+                $redirectUrl = isset($wgOAuth2Client['config']['redirect_uri'])
+                                        ? $wgOAuth2Client['config']['redirect_uri']
+                                        : 'Special:OAuth2Client/callback';
                 $this->client = new OAuth2([
                         'client_id'              => $wgOAuth2Client['client']['id'],
                         'client_secret'          => $wgOAuth2Client['client']['secret'],
-                        'redirect_uri'           => $wgServer . str_replace( '$1', $wgOAuth2Client['config']['redirect_uri'], $wgArticlePath),
+                        'redirect_uri'           => $wgServer . str_replace( '$1', $redirectUrl, $wgArticlePath),
                         'auth'                   => $wgOAuth2Client['config']['auth_endpoint'],
                         'token'                  => $wgOAuth2Client['config']['token_endpoint'],
                         'logout'                 => $wgOAuth2Client['config']['logout_endpoint'],
